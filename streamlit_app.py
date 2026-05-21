@@ -10,6 +10,11 @@ import json
 import os
 from pathlib import Path
 import pyperclip
+from dotenv import load_dotenv
+
+# Load environment variables from .env if present
+load_dotenv()
+HF_API_TOKEN = os.getenv("HUGGINGFACEHUB_API_TOKEN")
 
 from utils import (
     extract_text_from_pdf,
@@ -254,6 +259,11 @@ def main():
             options=list(AVAILABLE_MODELS.keys()),
             help="Different models offer different quality and speed trade-offs"
         )
+
+        if HF_API_TOKEN:
+            st.success("🔐 Hugging Face API token loaded from .env")
+        else:
+            st.info("Add HUGGINGFACEHUB_API_TOKEN to .env to use private Hugging Face models")
         
         # Summary Length
         summary_length = st.select_slider(
